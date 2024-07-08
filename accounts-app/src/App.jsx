@@ -12,23 +12,49 @@ function App() {
   let [registerPassword, setRegisterPassword] = useState("")
 
 
-  const login = () => {
+  const login = async () => {
     console.log('login')
     const loginData = {
-      loginEmail,
-      loginPassword
+      user_email: loginEmail,
+      user_key: loginPassword
     }
     console.log(loginData)
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginData)
+    }
+
+    let response = await fetch('http://127.0.0.1:8000/login', options)
+    let data = await response.json()
+    console.log(data)
   }
 
-  const register = () => {
+  const register = async () => {
     console.log('register')
     const registerData = {
-      registerName,
-      registerEmail,
-      registerPassword
+      user_name: registerName,
+      user_email: registerEmail,
+      user_key: registerPassword
     }
+
     console.log(registerData)
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(registerData)
+    }
+
+    let response = await fetch('http://127.0.0.1:8000/create-user', options)
+    let data = await response.json()
+    console.log(data)
+
   }
 
   const handleChangeLogin = (event) => {
