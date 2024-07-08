@@ -55,7 +55,7 @@ function App() {
     <>
       <h1 className="text-3xl font-bold my-5">App cuentas test 🏦</h1>
       <div className="w-full flex justify-center">
-        <div className="w-full lg:w-9/12">
+        <div className="w-full md:w-full lg:w-8/12 xl:w-6/12 2xl:w-3/12">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 className="block text-gray-900 text-2xl font-bold mb-2">Inciar sesión</h2>
             <div className="mb-4">
@@ -85,7 +85,7 @@ function App() {
       </div>
       
       <div className="w-full flex justify-center">
-        <div className="w-full lg:w-9/12">
+        <div className="w-full md:w-full lg:w-8/12 xl:w-6/12 2xl:w-3/12">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <h2 className="block text-gray-900 text-2xl font-bold mb-2">Crear cuenta</h2>
             <div className="mb-4">
