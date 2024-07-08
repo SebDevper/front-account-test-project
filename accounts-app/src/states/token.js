@@ -3,11 +3,10 @@ var Token = (function() {
   let token = "";
 
   let getToken = () => {
-    return token
+    return window.localStorage.getItem('token')
   }
-
   let setToken = (newToken) => {
-    token = newToken
+    window.localStorage.setItem('token', newToken)
   }
  
   return {
