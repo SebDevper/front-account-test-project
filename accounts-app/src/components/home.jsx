@@ -21,10 +21,16 @@ function Home() {
 
   let [registerSucces, setRegisterSucces] = useState(false)
 
+  let [validEmailLogin, setValidEmailLogin] = useState(true)
+  let [validEmailRegister, setValidEmailRegister] = useState(true)
+
   let navigate = useNavigate();
 
 
   const login = async () => {
+    if (!validEmailLogin){
+      return
+    }
 
     setLoginLoading(true)
     setLoginError(false)
@@ -63,6 +69,11 @@ function Home() {
   }
 
   const register = async () => {
+    
+    if (!validEmailRegister){
+      return
+    }
+
     console.log('register')
     setRegisterLoading(true)
     setRegisterError(false)
@@ -105,8 +116,10 @@ function Home() {
   const handleChangeLogin = (event) => {
     const newValue = event.target.value
     const targetId = event.target.id
-    if (targetId === 'loginEmail')
+    if (targetId === 'loginEmail'){
+      validateEmailLogin(newValue)
       setLoginEmail(newValue)
+    }
     if (targetId === 'loginPassword')
       setLoginPassword(newValue)
   }
@@ -116,8 +129,10 @@ function Home() {
     const targetId = event.target.id
     if (targetId === 'registerName')
       setRegisterName(newValue)
-    if (targetId === 'registerEmail')
+    if (targetId === 'registerEmail'){
       setRegisterEmail(newValue)
+      validateEmailRegister(newValue)
+    }
     if (targetId === 'registerPassword')
       setRegisterPassword(newValue)
   }
@@ -175,6 +190,44 @@ function Home() {
     }
   }
 
+  const renderLoginEmailError = () => {
+    if (validEmailLogin){
+      return
+    }
+
+    return (
+      <div className="text-rose-700 mb-2">Email no válido</div>
+    )
+  }
+
+  const renderRegisterEmailError = () => {
+    if (validEmailRegister){
+      return
+    }
+
+    return (
+      <div className="text-rose-700 mb-2">Email no válido</div>
+    )
+  }
+
+  const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  const validateEmailLogin = (newEmail) => {
+    console.log(newEmail)
+    if(newEmail && newEmail.match(isValidEmail)){
+      setValidEmailLogin(true)
+    }else{
+      setValidEmailLogin(false)
+    }
+  }
+
+  const validateEmailRegister = (newEmail) => {
+    if(newEmail && newEmail.match(isValidEmail)){
+      setValidEmailRegister(true)
+    }else{
+      setValidEmailRegister(false)
+    }
+  }
+
   return (
     <>
       <h1 className="text-3xl font-bold my-5 text-center">App cuentas test 🏦</h1>
@@ -190,6 +243,7 @@ function Home() {
                 value={loginEmail}
                 onChange={handleChangeLogin}/>
             </div>
+            {renderLoginEmailError()}
             <div className="mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="loginPassword">
                 Contraseña
@@ -226,6 +280,7 @@ function Home() {
                 value={registerEmail}
                 onChange={handleChangeRegister}/>
             </div>
+            {renderRegisterEmailError()}
             <div className="mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="registerPassword">
                 Contraseña

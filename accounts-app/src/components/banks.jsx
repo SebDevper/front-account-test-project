@@ -74,7 +74,7 @@ function Banks() {
       const kpi = bankData.filter(bank => bank.bank_name === bankSelected)[0].kpi
       return (
       <div>
-        <h1>Balance (KPI): {kpi}</h1>
+        <h1 className="text-xl font-bold mb-6">Balance (KPI): {kpi}</h1>
       </div>
       )
     }
@@ -106,7 +106,7 @@ function Banks() {
                       <td className="border border-stone-400">
                         Deuda
                       </td>
-                      <td className="border border-stone-400">
+                      <td className="border border-stone-400 text-rose-700">
                         {account.currency} -{account.balance.current}
                       </td>
                       <td className="border border-stone-400">
@@ -117,11 +117,11 @@ function Banks() {
                 }
                 if (account.balance_type === "ASSET"){
                   return (
-                    <tr key={account.id}>
+                    <tr  key={account.id}>
                       <td className="border border-stone-400">
                         Ingreso
                       </td>
-                      <td className="border border-stone-400">
+                      <td className="border border-stone-400 text-lime-800">
                         {account.currency} {account.balance.current}
                       </td>
                       <td className="border border-stone-400">
