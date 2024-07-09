@@ -8,10 +8,13 @@ function Banks() {
   let [bankSelected, setBankSelectd] = useState(null)
   let [pageTitle, setPageTitle] = useState("Seleccione un banco")
 
+  let [loadingBanks, setLoadingBanks] = useState(true)
+
   let navigate = useNavigate();
 
   const getBanks = async () => {
     console.log('getBanks')
+    setLoadingBanks(true)
 
     const options = {
       method: 'GET',
@@ -25,6 +28,7 @@ function Banks() {
     let data = await response.json()
     console.log(data)
     setBankData(data.accounts)
+    setLoadingBanks(false)
   }
 
   const showBalance = (event) => {
@@ -39,13 +43,25 @@ function Banks() {
     setPageTitle("Seleccione un banco")
   }
 
+  const renderBankLoader = () => {
+    if (!loadingBanks){
+      return null
+    }
+
+    return (
+      <div className="text-xl font-bold text-center">
+        Cargando bancos...
+      </div>
+    )
+  }
+
   const renderBackButton = () => {
     if (bankSelected)
     {
       return (
       <div className='w-full flex justify-center'>
         <button
-          className="bg-blue-500 bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-7/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-7/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12"
           onClick={resetSelectedBank}>
           volver
         </button>
@@ -71,35 +87,54 @@ function Banks() {
 
     const bankAccounts = bankData.filter(bank => bank.bank_name === bankSelected)[0].accounts
     return (
-      <table>
-        <tr>
-          <th>Tipo</th>
-          <th>Balance</th>
-          <th>Nombre</th>
-        </tr>
-        {
-          bankAccounts.map(account => {
-            if (account.balance_type === "LIABILITY"){
-              return (
-                <tr>
-                  <td>Deuda</td>
-                  <td>{account.currency} {account.balance.current}</td>
-                  <td>{account.name}</td>
-                </tr>
-              )
+      <>
+        <section className='w-full flex justify-center'>
+          {renderKpi()}
+        </section>
+        <section className='w-full flex justify-center'>
+          <table className="border-collapse border border-slate-500 table-auto">
+            <tr>
+              <th className="border border-stone-400">Tipo</th>
+              <th className="border border-stone-400">Balance</th>
+              <th className="border border-stone-400">Nombre</th>
+            </tr>
+            {
+              bankAccounts.map(account => {
+                if (account.balance_type === "LIABILITY"){
+                  return (
+                    <tr key={account.id}>
+                      <td className="border border-stone-400">
+                        Deuda
+                      </td>
+                      <td className="border border-stone-400">
+                        {account.currency} -{account.balance.current}
+                      </td>
+                      <td className="border border-stone-400">
+                        {account.name}
+                      </td>
+                    </tr>
+                  )
+                }
+                if (account.balance_type === "ASSET"){
+                  return (
+                    <tr key={account.id}>
+                      <td className="border border-stone-400">
+                        Ingreso
+                      </td>
+                      <td className="border border-stone-400">
+                        {account.currency} {account.balance.current}
+                      </td>
+                      <td className="border border-stone-400">
+                        {account.name}
+                      </td>
+                    </tr>
+                  )
+                }
+              })
             }
-            if (account.balance_type === "ASSET"){
-              return (
-                <tr>
-                  <td>Ingreso</td>
-                  <td>{account.currency} {account.balance.current}</td>
-                  <td>{account.name}</td>
-                </tr>
-              )
-            }
-          })
-        }
-      </table>
+          </table>
+        </section>
+      </>
     )
   }
 
@@ -121,9 +156,9 @@ function Banks() {
         renderBackButton()
       }
       <div className='w-full flex justify-center'>
-        <h1>{pageTitle}</h1>
+        <h1 className="text-3xl font-bold my-5">{pageTitle}</h1>
       </div>
-      {renderKpi()}
+      { renderBankLoader()}
       <section
         className=''>
         {
@@ -137,7 +172,7 @@ function Banks() {
                   <button
                     key={bank.bank_name}
                     id={bank.bank_name}
-                    className="bg-blue-500 bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-7/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12"
+                    className="border-2 border-blue-500 text-blue-500 py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-7/12 lg:w-2/12 xl:w-2/12 2xl:w-2/12"
                     onClick={showBalance}>
                     {bank.bank_name}
                   </button>

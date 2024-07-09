@@ -10,11 +10,25 @@ function Home() {
   let [registerEmail, setRegisterEmail] = useState("")
   let [registerPassword, setRegisterPassword] = useState("")
 
+  let [loginLoading, setLoginLoading] = useState(false)
+  let [registerLoading, setRegisterLoading] = useState(false)
+
+  let [loginError, setLoginError] = useState(false)
+  let [loginErrorMsg, setLoginErrorMsg] = useState("")
+
+  let [registerError, setRegisterError] = useState(false)
+  let [registerErrorMsg, setRegisterErrorMsg] = useState("")
+
+  let [registerSucces, setRegisterSucces] = useState(false)
+
   let navigate = useNavigate();
 
 
   const login = async () => {
 
+    setLoginLoading(true)
+    setLoginError(false)
+    setLoginErrorMsg("")
 
     console.log('login')
     const loginData = {
@@ -38,12 +52,23 @@ function Home() {
     if (data.status === 0){
       Token.setToken(data.token)
       navigate('/banks')
+      return
     }
-       
+
+    if (data.status === -1){
+      setLoginError(true)
+      setLoginErrorMsg(data.message)
+    }
+    setLoginLoading(false) 
   }
 
   const register = async () => {
     console.log('register')
+    setRegisterLoading(true)
+    setRegisterError(false)
+    setRegisterErrorMsg('')
+    setRegisterSucces(false)
+
     const registerData = {
       user_name: registerName,
       user_email: registerEmail,
@@ -63,6 +88,17 @@ function Home() {
     let response = await fetch('http://127.0.0.1:8000/create-user', options)
     let data = await response.json()
     console.log(data)
+
+    if (data.code === 0){
+      setRegisterError(true)
+      setRegisterErrorMsg(data.error)
+    }
+
+    if (data.code === 2){
+      setRegisterSucces(true)
+    }
+    
+    setRegisterLoading(false)
 
   }
 
@@ -86,9 +122,62 @@ function Home() {
       setRegisterPassword(newValue)
   }
 
+  const renderLoginButton = () => {
+    if(loginLoading || registerLoading){
+      return (
+        <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none" type="button" disabled>
+        Cargando...
+        </button>
+      )
+    }
+
+    return (
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
+      onClick={login}>
+      Iniciar sesión
+      </button>
+    )
+  }
+
+
+  const renderRegisterButton = () => {
+    if(loginLoading || registerLoading){
+      return (
+        <button className="bg-green-800 text-white font-bold py-2 px-4 rounded" type="button">
+          cargando...
+        </button>
+      )
+    }
+    
+    return (
+      <button className="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
+        onClick={register}>
+        Crear cuenta
+      </button>
+    )
+  }
+
+  const renderLoginError = () => {
+    if (loginError){
+      return (<div className="text-rose-700 mb-2">{loginErrorMsg}</div>)
+    }
+  }
+
+  const renderRegisterError = () => {
+    if (registerError){
+      return (<div className="text-rose-700 mb-2">{registerErrorMsg}</div>)
+    }
+  }
+
+  const renderRegisterSuccess = () => {
+    if (registerSucces){
+      return (<div className="text-lime-800 mb-2">Usuario Ingresado correctamente</div>)
+    }
+  }
+
   return (
     <>
-      <h1 className="text-3xl font-bold my-5">App cuentas test 🏦</h1>
+      <h1 className="text-3xl font-bold my-5 text-center">App cuentas test 🏦</h1>
       <div className="w-full flex justify-center">
         <div className="w-full md:w-full lg:w-8/12 xl:w-6/12 2xl:w-3/12">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -101,7 +190,7 @@ function Home() {
                 value={loginEmail}
                 onChange={handleChangeLogin}/>
             </div>
-            <div className="mb-6">
+            <div className="mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="loginPassword">
                 Contraseña
               </label>
@@ -109,11 +198,9 @@ function Home() {
                 value={loginPassword}
                 onChange={handleChangeLogin}/>
             </div>
+            {renderLoginError()}
             <div className="flex items-center justify-between">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
-              onClick={login}>
-                Iniciar sesión
-              </button> 
+              {renderLoginButton()}
             </div>
           </form> 
         </div>
@@ -139,7 +226,7 @@ function Home() {
                 value={registerEmail}
                 onChange={handleChangeRegister}/>
             </div>
-            <div className="mb-6">
+            <div className="mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="registerPassword">
                 Contraseña
               </label>
@@ -147,11 +234,12 @@ function Home() {
                 value={registerPassword}
                 onChange={handleChangeRegister}/>
             </div>
+            <div>
+              {renderRegisterError()}
+              {renderRegisterSuccess()}
+            </div>
             <div className="flex items-center justify-between">
-              <button className="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
-              onClick={register}>
-                Crear cuenta
-              </button> 
+              {renderRegisterButton()}
             </div>
           </form> 
         </div>
