@@ -45,7 +45,7 @@ function Home() {
       body: JSON.stringify(loginData)
     }
 
-    let response = await fetch('http://127.0.0.1:8000/login', options)
+    let response = await fetch('https://back-account-app-test.onrender.com/login', options)
     let data = await response.json()
     console.log(data)
 
@@ -85,7 +85,7 @@ function Home() {
       body: JSON.stringify(registerData)
     }
 
-    let response = await fetch('http://127.0.0.1:8000/create-user', options)
+    let response = await fetch('https://back-account-app-test.onrender.com/create-user', options)
     let data = await response.json()
     console.log(data)
 

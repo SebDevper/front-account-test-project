@@ -24,7 +24,7 @@ function Banks() {
       }
     }
 
-    let response = await fetch('http://127.0.0.1:8000/get_accounts_by_bank', options)
+    let response = await fetch('https://back-account-app-test.onrender.com/get_accounts_by_bank', options)
     let data = await response.json()
     console.log(data)
     setBankData(data.accounts)
