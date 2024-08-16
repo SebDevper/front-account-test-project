@@ -50,7 +50,7 @@ export default function Movements(){
 
     const table = ()=>{
         return (
-            <div className="relative overflow-x-auto flex justify-center">
+            <div className="relative overflow-x-auto flex justify-center mx-2">
             <table className="w-full lg:w-7/12 text-sm text-left rtl:text-right text-gray-500 border-b">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-14">
                     <tr className="border-b">
@@ -64,7 +64,9 @@ export default function Movements(){
                 movements.map((movement)=>{
                     return (
                         <tr key={movement.id}>
-                            <td>{movement.description? movement.description : "movimiento sin identificar"}</td>
+                            <td>
+                            {movement.description? movement.description : "movimiento sin identificar"}
+                            </td>
                             <td>{movement.type}</td>
                             <td className={movement.type === "OUTFLOW"? "text-red-400": ""}>
                                 {movement.amount}

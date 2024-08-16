@@ -44,7 +44,7 @@ export default function AccountList(){
 
     const table = ()=>{
         return (
-            <div className="relative overflow-x-auto">
+            <div className="relative overflow-x-auto mx-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-b">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-14">
                     <tr className="border-b ">
