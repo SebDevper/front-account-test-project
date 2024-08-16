@@ -50,14 +50,14 @@ function Home() {
       },
       body: JSON.stringify(loginData)
     }
-
+    console.log('login url', import.meta.env.VITE_LOGIN)
     let response = await fetch(import.meta.env.VITE_LOGIN, options)
     let data = await response.json()
     console.log(data)
 
     if (data.status === 0){
       Token.setToken(data.token)
-      navigate('/banks')
+      navigate('/banklist')
       return
     }
 
@@ -212,7 +212,6 @@ function Home() {
 
   const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const validateEmailLogin = (newEmail) => {
-    console.log(newEmail)
     if(newEmail && newEmail.match(isValidEmail)){
       setValidEmailLogin(true)
     }else{
