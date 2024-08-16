@@ -51,7 +51,7 @@ function Home() {
       body: JSON.stringify(loginData)
     }
 
-    let response = await fetch('https://back-account-app-test.onrender.com/login', options)
+    let response = await fetch(import.meta.env.VITE_LOGIN, options)
     let data = await response.json()
     console.log(data)
 
@@ -65,11 +65,11 @@ function Home() {
       setLoginError(true)
       setLoginErrorMsg(data.message)
     }
-    setLoginLoading(false) 
+    setLoginLoading(false)
   }
 
   const register = async () => {
-    
+
     if (!validEmailRegister){
       return
     }
@@ -96,7 +96,7 @@ function Home() {
       body: JSON.stringify(registerData)
     }
 
-    let response = await fetch('https://back-account-app-test.onrender.com/create-user', options)
+    let response = await fetch(import.meta.env.VITE_REGISTER, options)
     let data = await response.json()
     console.log(data)
 
@@ -108,7 +108,7 @@ function Home() {
     if (data.code === 2){
       setRegisterSucces(true)
     }
-    
+
     setRegisterLoading(false)
 
   }
@@ -163,7 +163,7 @@ function Home() {
         </button>
       )
     }
-    
+
     return (
       <button className="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button"
         onClick={register}>
@@ -239,7 +239,7 @@ function Home() {
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="loginEmail">
                 Correo
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="loginEmail" type="text" placeholder="example@mymail.com" 
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="loginEmail" type="text" placeholder="example@mymail.com"
                 value={loginEmail}
                 onChange={handleChangeLogin}/>
             </div>
@@ -256,10 +256,10 @@ function Home() {
             <div className="flex items-center justify-between">
               {renderLoginButton()}
             </div>
-          </form> 
+          </form>
         </div>
       </div>
-      
+
       <div className="w-full flex justify-center">
         <div className="w-full md:w-full lg:w-8/12 xl:w-6/12 2xl:w-3/12">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -268,7 +268,7 @@ function Home() {
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="registerName">
                 Nombre
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerName" type="text" placeholder="nombre" 
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerName" type="text" placeholder="nombre"
                 value={registerName}
                 onChange={handleChangeRegister}/>
             </div>
@@ -276,7 +276,7 @@ function Home() {
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="registerEmail">
                 Mail
               </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerEmail" type="text" placeholder="example@mymail.com" 
+              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registerEmail" type="text" placeholder="example@mymail.com"
                 value={registerEmail}
                 onChange={handleChangeRegister}/>
             </div>
@@ -296,7 +296,7 @@ function Home() {
             <div className="flex items-center justify-between">
               {renderRegisterButton()}
             </div>
-          </form> 
+          </form>
         </div>
       </div>
 

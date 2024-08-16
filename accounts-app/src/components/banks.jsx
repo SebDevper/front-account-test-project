@@ -3,7 +3,7 @@ import { useNavigate  } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 
-function Banks() { 
+function Banks() {
   let [bankData, setBankData] = useState([])
   let [bankSelected, setBankSelectd] = useState(null)
   let [pageTitle, setPageTitle] = useState("Seleccione un banco")
@@ -24,7 +24,7 @@ function Banks() {
       }
     }
 
-    let response = await fetch('https://back-account-app-test.onrender.com/get_accounts_by_bank', options)
+    let response = await fetch(import.meta.env.VITE_GET_ACCOUNTS, options)
     let data = await response.json()
     console.log(data)
     setBankData(data.accounts)
@@ -165,7 +165,7 @@ function Banks() {
           bankData.map(bank => {
             if (!bankSelected){
               return (
-                <div 
+                <div
                   className='text-center mb-2 '
                   key={bank.bank_name}
                 >
