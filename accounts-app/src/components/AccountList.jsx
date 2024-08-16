@@ -42,6 +42,67 @@ export default function AccountList(){
         navigate('/movements', {state: state})
     }
 
+    const table = ()=>{
+        return (
+            <div className="relative overflow-x-auto">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-b">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-14">
+                    <tr className="border-b ">
+                        <th>
+                            Nombre de cuenta
+                        </th>
+                        <th>
+                            Tipo de cuenta
+                        </th>
+                        <th>
+                            Código
+                        </th>
+                        <th>
+                            Ver detalle
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            {
+                accounts.length > 0 && accounts.map((account)=>{
+                    return (
+                        <tr
+                            className="border-b h-14"
+                            key={account.id}
+                        >
+                            <td>
+                                {account.name}
+                            </td>
+                            <td>
+                                {account.type}
+                            </td>
+                            <td>
+                                {account.internal_identification}
+                            </td>
+                            <td>
+                                <button
+                                    onClick={()=>{
+                                        selectAccount(
+                                            account.name,
+                                            account.id,
+                                            account.link
+                                        )}
+                                    }
+                                    className="text-blue-500"
+                                >
+                                    Ver detalle
+                                </button>
+                            </td>
+                        </tr>
+                    )
+                })
+            }
+                </tbody>
+            </table>
+            </div>
+        )
+    }
+
     useEffect(()=>{
         if(!bankCode){
             navigate('/banklist')
@@ -52,27 +113,40 @@ export default function AccountList(){
     }, [])
 
     return (
-        <div>
-            <h1>Lista de cuentas</h1>
-            <h2>Banco: {bankDisplayName}</h2>
+        <>
+            <h1 className={
+                `text-center text-2xl font-bold mt-6`
+            }>
+                    Lista de cuentas
+            </h1>
+            <h2 className={
+                `text-center text-l mb-10`
+            }>
+                    Banco: {bankDisplayName}
+            </h2>
             {
-                accounts.map((account)=>{
-                    return (
-                        <div
-                            key={account.id}
-                            onClick={()=>{
-                                    selectAccount(
-                                        account.name,
-                                        account.id,
-                                        account.link
-                                    )}
-                            }
-                        >
-                            ({account.currency}) {account.name} - {account.type} - {account.internal_identification}
-                        </div>
-                    )
-                })
+                // SI no hay ninguna cuenta
+                !loading && accounts.length === 0 && (
+                    <div
+                        className="text-center text-lg"
+                    >
+                        Este banco no tiene ninguna cuenta
+                    </div>
+                )
             }
-        </div>
+            {
+                // Si está cargando
+                loading && (
+                    <div
+                        className="text-center text-lg text-gray-500"
+                    >
+                        Cargando...
+                    </div>
+                )
+            }
+            {
+                accounts.length > 0 && table()
+            }
+        </>
     )
 }
